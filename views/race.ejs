@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <script src="/socket.io/socket.io.js"></script> -->
+    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            overflow:hidden;
+        }
+        video {
+            width: 100vw;
+            height: 100vh;
+            
+        }
+    </style>
+</head>
+<body>
+    <video id="myVideo" autoplay volume="0">
+        <source src="../assets/videos/FINAL VIDEO FIT FEST.mov" type="video/mp4" >
+        Your browser does not support HTML5 video.
+    </video>
+
+    <script>
+        let socket = io();
+       var vid = document.getElementById("myVideo");
+    //    document.addEventListener('keypress', (event) => {
+        //   var name = event.key;
+        // console.log(event.key)
+        socket.on('Play', function (data) {
+            // console.log(data)
+        if (data.signal === 'l'){
+            vid.volume = 1
+            // vid.muted = 'false'
+            vid.play()
+        }
+        })
+        socket.on('Pause', function (data) {
+            // console.log(data)
+        if (data.signal === 'p'){
+            // $("video").prop('muted', true)
+            vid.pause()
+        }
+        }) 
+        
+        // vid.addEventListener('ended',function(){location.href = '/thanks'})
+        vid.addEventListener('ended',function(){
+            socket.emit('finish','f')
+            location.href = '/welcome'
+        })
+    </script>
+</body>
+</html>
